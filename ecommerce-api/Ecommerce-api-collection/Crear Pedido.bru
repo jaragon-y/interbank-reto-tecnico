@@ -1,0 +1,27 @@
+meta {
+  name: Crear Pedido
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:9292/v1/api/ecommerce-api/pedido
+  body: json
+  auth: none
+}
+
+headers {
+  accept: */*
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "items": [
+      {
+        "productoId": 1,
+        "cantidad": 12
+      }
+    ]
+  }
+}
