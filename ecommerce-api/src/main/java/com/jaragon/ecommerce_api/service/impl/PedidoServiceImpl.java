@@ -53,8 +53,9 @@ public class PedidoServiceImpl implements PedidoService {
   public Mono<PedidoResponse> crearPedido(PedidoRequest request) {
 
     return crearPedidoBase()
-        .flatMap(pedido -> guardarItems(request, pedido)
-            .flatMap(items -> actualizarTotales(pedido, items))
+        .flatMap(pedido ->
+            guardarItems(request, pedido)
+              .thenReturn(pedido)
         )
         .flatMap(this::buildPedidoResponse);
   }
@@ -184,8 +185,9 @@ public class PedidoServiceImpl implements PedidoService {
     return pedidoItemRepository.findByPedidoId(pedido.getId())
         .collectList()
         .flatMap(items ->
-            validarYDescontarStock(items)
-                .then(confirmarPedidoEstado(pedido))
+            actualizarTotales(pedido,items)
+                .then(validarYDescontarStock(items)
+                  .then(confirmarPedidoEstado(pedido)))
         );
   }
 
