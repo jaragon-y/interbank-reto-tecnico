@@ -14,6 +14,7 @@ import com.jaragon.ecommerce_api.service.PedidoService;
 import java.math.RoundingMode;
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -50,6 +51,7 @@ public class PedidoServiceImpl implements PedidoService {
   }
 
   @Override
+  @Transactional
   public Mono<PedidoResponse> crearPedido(PedidoRequest request) {
 
     return crearPedidoBase()
@@ -61,6 +63,7 @@ public class PedidoServiceImpl implements PedidoService {
   }
 
   @Override
+  @Transactional
   public Mono<PedidoResponse> confirmarPedido(Long id) {
 
     return pedidoRepository.findById(id)
